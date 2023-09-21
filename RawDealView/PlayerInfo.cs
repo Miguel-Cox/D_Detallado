@@ -2,21 +2,11 @@ namespace RawDealView;
 
 public class PlayerInfo
 {
-    private string _superstarName;
-    private int _fortitudeRating;
-    private int _numberOfCardsInHand;
-    private int _numberOfCardsInArsenal;
-    
-    public int NumberOfCardsInHand
-    {
-        get { return _numberOfCardsInHand; }
-        set { _numberOfCardsInHand = value; }
-    }
-    public int NumberOfCardsInArsenal
-    {
-        get { return _numberOfCardsInArsenal; }
-        set { _numberOfCardsInArsenal = value; }
-    }
+    private readonly string _superstarName;
+    private readonly int _fortitudeRating;
+    private readonly int _numberOfCardsInHand;
+    private readonly int _numberOfCardsInArsenal;
+
     public PlayerInfo(string superstarName, int fortitudeRating, int numberOfCardsInHand, int numberOfCardsInArsenal)
     {
         _superstarName = superstarName;

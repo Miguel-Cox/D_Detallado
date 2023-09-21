@@ -1,222 +1,217 @@
 using System.Text.Json;
 using RawDealView;
 
-namespace RawDeal;
-
-public class Game
+namespace RawDeal
 {
-    private View _view;
-    private string _deckFolder;
-    private List<CardInfo>? allCards;
-    private List<SuperstarCardInfo>? allSuperstarCards;
-    private string P1Superstar;
-    private string[] P1Cards;
-    private string[] P1Hand;
-    private string P2Superstar;
-    private string[] P2Cards;
-    private string[] P2Hand;
-    private PlayerInfo PlayerInfo1;
-    private PlayerInfo PlayerInfo2;
-    
-    public Game(View view, string deckFolder)
+    public class Game
     {
-        _view = view;
-        _deckFolder = deckFolder;
-    }
+        private readonly View _view;
+        private readonly string _deckFolder;
+        private List<CardInfo>? _allCards;
+        private List<SuperstarCardInfo>? _allSuperstarCards;
+        private string _p1Superstar;
+        private string[] _p1Cards;
+        private string[] _p1Hand;
+        private string _p2Superstar;
+        private string[] _p2Cards;
+        private string[] _p2Hand;
+        private PlayerInfo _playerInfo1;
+        private PlayerInfo _playerInfo2;
 
-    private void SaveAllCards()
-    {
-        string cards = Path.Combine("data", "cards.json");
-        string allCardsJson = File.ReadAllText(cards);
-        allCards = JsonSerializer.Deserialize<List<CardInfo>>(allCardsJson);
-        
-        string superstarCards = Path.Combine("data", "superstar.json");
-        string allSuperstarCardsJson = File.ReadAllText(superstarCards);
-        allSuperstarCards = JsonSerializer.Deserialize<List<SuperstarCardInfo>>(allSuperstarCardsJson);
-        
-    }
-    
-    public class CardInfo
-    {
-        public string Title { get; set; }
-        public List<string> Types { get; set; }
-        public List<string> Subtypes { get; set; }
-        public string Fortitude { get; set; }
-        public string Damage { get; set; }
-        public string StunValue { get; set; }
-        public string CardEffect { get; set; }
-    }
-    public class SuperstarCardInfo
-    {
-        public string Name { get; set; }
-        public string Logo { get; set; }
-        public int HandSize { get; set; }
-        public int SuperstarValue { get; set; }
-        public string SuperstarAbility { get; set; }
-    }
-
-    private CardInfo GetCardDataByTitle(string title)
-    {
-        CardInfo obj = allCards.FirstOrDefault(x => x.Title == title);
-        return obj;
-    }
-
-    private SuperstarCardInfo GetSuperstarCardDataByName(string name)
-    {
-        SuperstarCardInfo obj = allSuperstarCards.FirstOrDefault(x => x.Name == name);
-        return obj;
-    }
-    
-    private void RegisterDeck(string deck_path, string player)
-    {
-        string[] cards = File.ReadAllLines(deck_path);
-        int cardNewLength = cards[0].Length - 17;
-        string superstar = cards[0].Substring(0, cardNewLength);
-        
-        if (player == "P1")
+        public Game(View view, string deckFolder)
         {
-            P1Superstar = superstar;
-            P1Cards = cards.Skip(1).ToArray();
-        } else if (player == "P2")
-        {
-            P2Superstar = superstar;
-            P2Cards = cards.Skip(1).ToArray();
+            _view = view;
+            _deckFolder = deckFolder;
         }
         
-    }
-    private bool CheckValidDeck(string deck_path)
-    {
-            string[] cards = File.ReadAllLines(deck_path);
+        public class CardInfo
+        {
+            public string Title { get; set; }
+            public List<string> Types { get; set; }
+            public List<string> Subtypes { get; set; }
+            public string Fortitude { get; set; }
+            public string Damage { get; set; }
+            public string StunValue { get; set; }
+            public string CardEffect { get; set; }
+        }
+        public class SuperstarCardInfo
+        {
+            public string Name { get; set; }
+            public string Logo { get; set; }
+            public int HandSize { get; set; }
+            public int SuperstarValue { get; set; }
+            public string SuperstarAbility { get; set; }
+        }
+
+
+        private void SaveAllCards()
+        {
+            string cardsPath = Path.Combine("data", "cards.json");
+            string allCardsJson = File.ReadAllText(cardsPath);
+            _allCards = JsonSerializer.Deserialize<List<CardInfo>>(allCardsJson);
+
+            string superstarCardsPath = Path.Combine("data", "superstar.json");
+            string allSuperstarCardsJson = File.ReadAllText(superstarCardsPath);
+            _allSuperstarCards = JsonSerializer.Deserialize<List<SuperstarCardInfo>>(allSuperstarCardsJson);
+        }
+
+        private CardInfo GetCardDataByTitle(string title)
+        {
+            return _allCards.FirstOrDefault(x => x.Title == title);
+        }
+
+        private SuperstarCardInfo GetSuperstarCardDataByName(string name)
+        {
+            return _allSuperstarCards.FirstOrDefault(x => x.Name == name);
+        }
+
+        private bool CheckValidDeck(string deckPath)
+        {
+            string[] cards = File.ReadAllLines(deckPath);
             string[] superstarCardsLogos = {"StoneCold", "Undertaker", "Mankind", "HHH", "TheRock", "Kane", "Jericho"};
-            string mySuperstarLogo = new string("");
+            string mySuperstarLogo = "";
+
             bool isHeel = false;
             bool isFace = false;
-            
+
             if (cards.Length != 61)
-            {   
+            {
                 _view.SayThatDeckIsInvalid();
                 return false;
             }
 
             bool skipFirst = true;
+
             foreach (var card in cards)
             {
                 if (skipFirst) // Obtenemos primero la carta superstar
                 {
                     int cardNewLength = card.Length - 17;
-                    string superstarname = card.Substring(0, cardNewLength);
-                    SuperstarCardInfo SP = GetSuperstarCardDataByName(superstarname);
-                    mySuperstarLogo = SP.Logo;
+                    string superstarName = card.Substring(0, cardNewLength);
+                    SuperstarCardInfo superstarCardInfo = GetSuperstarCardDataByName(superstarName);
+                    mySuperstarLogo = superstarCardInfo.Logo;
                     skipFirst = false;
                     continue;
                 }
 
-                CardInfo DataInfo = GetCardDataByTitle(card);
+                CardInfo cardInfo = GetCardDataByTitle(card);
 
                 // Vemos si hay solo hay Heel o Face
-                if (DataInfo.Subtypes.Contains("Face"))
+                if (cardInfo.Subtypes.Contains("Face"))
                 {
                     isFace = true;
                 }
-                if (DataInfo.Subtypes.Contains("Heel"))
+                if (cardInfo.Subtypes.Contains("Heel"))
                 {
                     isHeel = true;
                 }
-                
-                if (isHeel & isFace)
+
+                if (isHeel && isFace)
                 {
                     _view.SayThatDeckIsInvalid();
                     return false;
                 }
-                
-                // Vemos si esta repetida más de 3 veces, cumpliendo Unique y Setup
+
+                // Vemos si está repetida más de 3 veces, cumpliendo Unique y Setup
                 int count = cards.Count(str => str == card);
 
-                if ((DataInfo.Subtypes.Contains("Unique") & count > 1) || count > 3 & !DataInfo.Subtypes.Contains("SetUp"))
+                if ((cardInfo.Subtypes.Contains("Unique") && count > 1) || (count > 3 && !cardInfo.Subtypes.Contains("SetUp")))
                 {
                     _view.SayThatDeckIsInvalid();
                     return false;
                 }
-                
-                // Vemos si tiene el logo de algun otro superstar
+
+                // Vemos si tiene el logo de algún otro superstar
                 foreach (var logo in superstarCardsLogos)
                 {
-                    if (DataInfo.Subtypes.Contains(logo) & logo != mySuperstarLogo)
+                    if (cardInfo.Subtypes.Contains(logo) && logo != mySuperstarLogo)
                     {
                         _view.SayThatDeckIsInvalid();
                         return false;
                     }
                 }
             }
-            
+
             return true;
-    }
-
-    private void RegisterPlayers()
-    {
-        SuperstarCardInfo SP1 = GetSuperstarCardDataByName(P1Superstar);
-        SuperstarCardInfo SP2 = GetSuperstarCardDataByName(P2Superstar);
-        PlayerInfo P1 = new PlayerInfo(P1Superstar, 0, SP1.HandSize, 60 - SP1.HandSize);
-        PlayerInfo P2 = new PlayerInfo(P2Superstar, 0, SP2.HandSize, 60 - SP2.HandSize);
-        
-        PlayerInfo1 = P1;
-        PlayerInfo2 = P2;
-    }
-    
-    public void StartGame()
-    {   
-        SuperstarCardInfo SP1 = GetSuperstarCardDataByName(P1Superstar);
-        SuperstarCardInfo SP2 = GetSuperstarCardDataByName(P2Superstar);
-
-        if (SP2.SuperstarValue > SP1.SuperstarValue)
-        {   
-            _view.SayThatATurnBegins(P2Superstar);
-            PlayerInfo2.NumberOfCardsInHand++;
-            PlayerInfo2.NumberOfCardsInArsenal--;
-            _view.ShowGameInfo(PlayerInfo2, PlayerInfo1);
-            
-            // Cambiar esto, esta muy feo
-            string selectedOption = _view.ShowPlayerOptions();
-            if (selectedOption == "4")
-            {
-                _view.CongratulateWinner(P1Superstar);
-            }
         }
-        else
+
+        private void RegisterDeck(string deckPath, string player)
         {
-            _view.SayThatATurnBegins(P1Superstar);
-            PlayerInfo1.NumberOfCardsInHand++;
-            PlayerInfo1.NumberOfCardsInArsenal--;
-            _view.ShowGameInfo(PlayerInfo1, PlayerInfo2);
-            
-            // Cambiar esto, esta muy feo
-            string selectedOption = _view.ShowPlayerOptions();
-            if (selectedOption == "4")
+            string[] cards = File.ReadAllLines(deckPath);
+            int cardNewLength = cards[0].Length - 17;
+            string superstar = cards[0].Substring(0, cardNewLength);
+
+            if (player == "P1")
             {
-                _view.CongratulateWinner(P2Superstar);
+                _p1Superstar = superstar;
+                _p1Cards = cards.Skip(1).ToArray();
+            }
+            else if (player == "P2")
+            {
+                _p2Superstar = superstar;
+                _p2Cards = cards.Skip(1).ToArray();
             }
         }
-        
-        
 
-    }
-    
-    public void Play()
-    {   
-        SaveAllCards();
-        string deck_path1 = _view.AskUserToSelectDeck(_deckFolder);
-        bool validDeck1 = CheckValidDeck(deck_path1);
+        private void RegisterPlayers()
+        {
+            SuperstarCardInfo sp1 = GetSuperstarCardDataByName(_p1Superstar);
+            SuperstarCardInfo sp2 = GetSuperstarCardDataByName(_p2Superstar);
+            _playerInfo1 = new PlayerInfo(_p1Superstar, 0, sp1.HandSize, 60 - sp1.HandSize);
+            _playerInfo2 = new PlayerInfo(_p2Superstar, 0, sp2.HandSize, 60 - sp2.HandSize);
+        }
 
-        if (validDeck1)
-        {   
-            RegisterDeck(deck_path1, "P1");
-            string deck_path2 = _view.AskUserToSelectDeck(_deckFolder);
-            bool validDeck2 = CheckValidDeck(deck_path2);
-            if (validDeck2)
+        public void StartGame()
+        {
+            SuperstarCardInfo sp1 = GetSuperstarCardDataByName(_p1Superstar);
+            SuperstarCardInfo sp2 = GetSuperstarCardDataByName(_p2Superstar);
+
+            if (sp2.SuperstarValue > sp1.SuperstarValue)
             {
-                RegisterDeck(deck_path2, "P2");
-                RegisterPlayers();
-                StartGame();
+                _view.SayThatATurnBegins(_p2Superstar);
+                _playerInfo2.NumberOfCardsInHand++;
+                _playerInfo2.NumberOfCardsInArsenal--;
+                _view.ShowGameInfo(_playerInfo2, _playerInfo1);
+
+                string selectedOption = _view.ShowPlayerOptions();
+                if (selectedOption == "4")
+                {
+                    _view.CongratulateWinner(_p1Superstar);
+                }
+            }
+            else
+            {
+                _view.SayThatATurnBegins(_p1Superstar);
+                _playerInfo1.NumberOfCardsInHand++;
+                _playerInfo1.NumberOfCardsInArsenal--;
+                _view.ShowGameInfo(_playerInfo1, _playerInfo2);
+
+                string selectedOption = _view.ShowPlayerOptions();
+                if (selectedOption == "4")
+                {
+                    _view.CongratulateWinner(_p2Superstar);
+                }
+            }
+        }
+
+        public void Play()
+        {
+            SaveAllCards();
+            string deckPath1 = _view.AskUserToSelectDeck(_deckFolder);
+            bool validDeck1 = CheckValidDeck(deckPath1);
+
+            if (validDeck1)
+            {
+                RegisterDeck(deckPath1, "P1");
+                string deckPath2 = _view.AskUserToSelectDeck(_deckFolder);
+                bool validDeck2 = CheckValidDeck(deckPath2);
+
+                if (validDeck2)
+                {
+                    RegisterDeck(deckPath2, "P2");
+                    RegisterPlayers();
+                    StartGame();
+                }
             }
         }
     }
