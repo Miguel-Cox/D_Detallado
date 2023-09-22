@@ -2098,3 +2098,16 @@ C:\Users\Miguel Cox\RiderProjects\D_Detallado\RawDeal.Tests\obj\Debug\net6.0\ref
 C:\Users\Miguel Cox\RiderProjects\D_Detallado\RawDeal.Tests\obj\Debug\net6.0\RawDeal.Tests.pdb
 C:\Users\Miguel Cox\RiderProjects\D_Detallado\RawDeal.Tests\obj\Debug\net6.0\RawDeal.Tests.genruntimeconfig.cache
 C:\Users\Miguel Cox\RiderProjects\D_Detallado\RawDeal.Tests\obj\Debug\net6.0\ref\RawDeal.Tests.dll
+C:\Users\Miguel Cox\RiderProjects\D_Detallado\RawDeal.Tests\bin\Debug\net6.0\data\01-ValidDecks-Tests\1.txt
+C:\Users\Miguel Cox\RiderProjects\D_Detallado\RawDeal.Tests\bin\Debug\net6.0\data\01-ValidDecks-Tests\2.txt
+C:\Users\Miguel Cox\RiderProjects\D_Detallado\RawDeal.Tests\bin\Debug\net6.0\data\01-ValidDecks-Tests\3.txt
+C:\Users\Miguel Cox\RiderProjects\D_Detallado\RawDeal.Tests\bin\Debug\net6.0\data\01-ValidDecks-Tests\4.txt
+C:\Users\Miguel Cox\RiderProjects\D_Detallado\RawDeal.Tests\bin\Debug\net6.0\data\01-ValidDecks-Tests\5.txt
+C:\Users\Miguel Cox\RiderProjects\D_Detallado\RawDeal.Tests\bin\Debug\net6.0\data\01-ValidDecks-Tests\6.txt
+C:\Users\Miguel Cox\RiderProjects\D_Detallado\RawDeal.Tests\bin\Debug\net6.0\data\01-ValidDecks\01.txt
+C:\Users\Miguel Cox\RiderProjects\D_Detallado\RawDeal.Tests\bin\Debug\net6.0\data\01-ValidDecks\02.txt
+C:\Users\Miguel Cox\RiderProjects\D_Detallado\RawDeal.Tests\bin\Debug\net6.0\data\01-ValidDecks\03.txt
+C:\Users\Miguel Cox\RiderProjects\D_Detallado\RawDeal.Tests\bin\Debug\net6.0\data\01-ValidDecks\04.txt
+C:\Users\Miguel Cox\RiderProjects\D_Detallado\RawDeal.Tests\bin\Debug\net6.0\data\01-ValidDecks\05.txt
+C:\Users\Miguel Cox\RiderProjects\D_Detallado\RawDeal.Tests\bin\Debug\net6.0\data\01-ValidDecks\06.txt
+C:\Users\Miguel Cox\RiderProjects\D_Detallado\RawDeal.Tests\bin\Debug\net6.0\data\01-ValidDecks\07.txt

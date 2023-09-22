@@ -15,13 +15,19 @@ public class Game
 
     public void Play()
     {   
-        string deckPath1 = _view.AskUserToSelectDeck(_deckFolder);
-        Console.WriteLine(deckPath1);
+        string deckPath = _view.AskUserToSelectDeck(_deckFolder);
         Cards cards = new Cards();
         
-        Deck deck1 = new Deck(_view, deckPath1, cards);
+        Deck deck1 = new Deck(_view, deckPath, cards);
 
-        deck1.CheckValidDeck();
+        if (deck1.CheckValidDeck())
+        {
+            string deckPath2 = _view.AskUserToSelectDeck(_deckFolder);
+            Deck deck2 = new Deck(_view, deckPath2, cards);
+            deck2.CheckValidDeck();
+        }
+        
+        
     }
     
 }

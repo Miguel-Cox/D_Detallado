@@ -108,14 +108,12 @@ public class Deck
     
     public bool CheckValidDeck()
     {
-        if (CheckLength() || CheckSubtype() || CheckCount() || CheckSuperstarSubtype()) // TODO: Revisar esto
+        if (CheckLength() || CheckSubtype() || CheckCount() || CheckSuperstarSubtype())
         {
             _view.SayThatDeckIsInvalid();
-            Console.WriteLine("Se pitio");
             return false;
         }
         
-        Console.WriteLine("Esta todo bien");
         return true;
     }
 }

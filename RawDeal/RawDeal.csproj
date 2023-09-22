@@ -1575,12 +1575,9 @@
     </ItemGroup>
 
 
-    <ItemGroup>
-      <Folder Include="E0\" />
-    </ItemGroup>
 
     <ItemGroup>
-      <Compile Remove="E0\LastClass.cs" />
+      <Compile Remove="LastClass.cs" />
     </ItemGroup>
 
 </Project>
