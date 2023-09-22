@@ -188,7 +188,11 @@
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\Miguel Cox\\RiderProjects\\D_Detallado\\RawDealView\\RawDealView.csproj": {
+                "projectPath": "C:\\Users\\Miguel Cox\\RiderProjects\\D_Detallado\\RawDealView\\RawDealView.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

@@ -1,13 +1,15 @@
+using RawDealView.Formatters;
+
 namespace RawDeal;
 
-public class Card
+public struct Card : IViewableCardInfo
 {
-    public string Title { get; set; }
-    public List<string> Types { get; set; }
-    public List<string> Subtypes { get; set; }
-    public string Fortitude { get; set; }
-    public string Damage { get; set; }
-    public string StunValue { get; set; }
-    public string CardEffect { get; set; }
+    public string Title { get; }
+    public string Fortitude { get; }
+    public string Damage { get; }
+    public string StunValue { get; }
+    public List<string> Types { get; }
+    public List<string> Subtypes { get; }
+    public string CardEffect { get; }
     
 }
