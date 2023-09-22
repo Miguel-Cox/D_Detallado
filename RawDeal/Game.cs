@@ -70,6 +70,8 @@ public class Game
         _waitingPlayer = _player2;
         _player1.StartingDraw();
         _player2.StartingDraw();
+        _view.SayThatATurnBegins(_currentPlayer._superstarCard.Name);
+        ShowGameInfo();
         Turns();
     }
 
@@ -83,15 +85,28 @@ public class Game
         (_currentPlayer, _waitingPlayer) = (_waitingPlayer, _currentPlayer);
     }
     
-    private void Turns()
+    private void NextTurn()
     {
+        SwitchPlayers();
+        _player1.DrawCard();
+        _player2.DrawCard();
         _view.SayThatATurnBegins(_currentPlayer._superstarCard.Name);
         ShowGameInfo();
-        var selected = _currentPlayer.ShowPlayOptions();
-        DelegateDuties(selected);
+        Turns();
     }
     
-    private void DelegateDuties(string selected)
+    private void Turns()
+    {
+        var selected = _currentPlayer.ShowPlayOptions();
+        MainMenu(selected);
+    }
+
+    private void Surrender()
+    {
+        _view.CongratulateWinner(_waitingPlayer._name);
+    }
+    
+    private void MainMenu(string selected)
     {
         int number = int.Parse(selected);
         
@@ -104,10 +119,10 @@ public class Game
                 // Function2();
                 break;
             case 3:
-                // Function3();
+                NextTurn();
                 break;
             case 4:
-                _currentPlayer.Surrender();
+                Surrender();
                 break;
             default:
                 break;
@@ -148,5 +163,6 @@ public class Game
             stringList.Add(cardString);
         }
         _view.ShowCards(stringList);
+        Turns();
     }
 }

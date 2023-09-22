@@ -8,8 +8,7 @@ public class Player
 {
     private View _view;
     private Deck _deck;
-    private String _name;
-    public bool _surrender;
+    public String _name;
     public List<Card> _hand = new List<Card>();
     private List<Card> _arsenal = new List<Card>();
     public List<Card> _ringArea = new List<Card>();
@@ -24,6 +23,7 @@ public class Player
         _view = view;
         _deck = deck;
         SaveCards();
+        SaveName();
     }
 
     private void SaveCards()
@@ -34,6 +34,11 @@ public class Player
             _arsenal.Add(_deck._allCards.GetCardDataByTitle(card));
         }
         
+    }
+
+    private void SaveName()
+    {
+        _name = _superstarCard.Name;
     }
 
     public void DrawCard()
@@ -60,11 +65,5 @@ public class Player
     {
         string selectedOption = _view.ShowPlayerOptions();
         return selectedOption;
-    }
-    
-
-    public void Surrender()
-    {
-        _surrender = true;
     }
 }
