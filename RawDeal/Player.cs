@@ -9,13 +9,16 @@ public class Player
     private View _view;
     private Deck _deck;
     private String _name;
-    private List<Card> _hand = new List<Card>();
+    public bool _surrender;
+    public List<Card> _hand = new List<Card>();
     private List<Card> _arsenal = new List<Card>();
-    private List<Card> _ringSide = new List<Card>();
-    private List<Card> _ringArea = new List<Card>();
+    public List<Card> _ringArea = new List<Card>();
+    public List<Card> _ringSide = new List<Card>();
     private int fortitude;
-    private SuperstarCard _superstarCard;
+    public SuperstarCard _superstarCard;
     
+    public PlayerInfo PlayerInfo => new(_superstarCard.Name, fortitude, _hand.Count, _arsenal.Count);
+
     public Player(View view, Deck deck)
     {
         _view = view;
@@ -52,9 +55,16 @@ public class Player
             counter++;
         }
     }
-
-    public void WatchCards()
+    
+    public string ShowPlayOptions()
     {
-        CardSet cardset = _view.AskUserWhatSetOfCardsHeWantsToSee();
+        string selectedOption = _view.ShowPlayerOptions();
+        return selectedOption;
+    }
+    
+
+    public void Surrender()
+    {
+        _surrender = true;
     }
 }

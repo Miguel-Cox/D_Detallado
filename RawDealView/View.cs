@@ -229,7 +229,17 @@ public class View
         _view.WriteLine(player2);
         ShowDivision();
     }
-
+    public string ShowPlayerOptions()
+    {
+        _view.WriteLine("1- Ver cartas");
+        _view.WriteLine("2- Jugar carta");
+        _view.WriteLine("3- Terminar turno");
+        _view.WriteLine("4- Rendirse");
+        _view.WriteLine("(Ingresa un número entre 1 y 4)");
+        string option = _view.ReadLine();
+        return option;
+    }
+    
     public int AskUserToSelectAReversal(string superstarName, List<string> applicableReversals)
     {
         if (applicableReversals.Any())

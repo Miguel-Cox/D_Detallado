@@ -1,4 +1,6 @@
 using RawDealView;
+using RawDealView.Formatters;
+using RawDealView.Options;
 
 namespace RawDeal;
 
@@ -11,6 +13,8 @@ public class Game
     private Deck _deck2;
     private Player _player1;
     private Player _player2;
+    private Player _currentPlayer;
+    private Player _waitingPlayer;
 
     public Game(View view, string deckFolder)
     {
@@ -41,8 +45,7 @@ public class Game
         }
         else return _deck1;
     }
-
-
+    
     private void CreatePlayers()
     {
         Deck p1Deck = GetStarterDeck();
@@ -57,8 +60,93 @@ public class Game
         if (CheckStartRequirements())
         {
             CreatePlayers();
-            _player1.StartingDraw();
-            _player1.WatchCards();
+            StartGame();
         }
+    }
+
+    private void StartGame()
+    {
+        _currentPlayer = _player1;
+        _waitingPlayer = _player2;
+        _player1.StartingDraw();
+        _player2.StartingDraw();
+        Turns();
+    }
+
+    private void ShowGameInfo()
+    {
+        _view.ShowGameInfo(_player1.PlayerInfo, _player2.PlayerInfo);
+    }
+    
+    private void SwitchPlayers()
+    {
+        (_currentPlayer, _waitingPlayer) = (_waitingPlayer, _currentPlayer);
+    }
+    
+    private void Turns()
+    {
+        _view.SayThatATurnBegins(_currentPlayer._superstarCard.Name);
+        ShowGameInfo();
+        var selected = _currentPlayer.ShowPlayOptions();
+        DelegateDuties(selected);
+    }
+    
+    private void DelegateDuties(string selected)
+    {
+        int number = int.Parse(selected);
+        
+        switch (number)
+        {
+            case 1:
+                ChooseCardsToSee();
+                break;
+            case 2:
+                // Function2();
+                break;
+            case 3:
+                // Function3();
+                break;
+            case 4:
+                _currentPlayer.Surrender();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void ChooseCardsToSee()
+    {
+        CardSet cardset = _view.AskUserWhatSetOfCardsHeWantsToSee();
+        
+        switch (cardset)
+        {
+            case CardSet.Hand:
+                PrintCards(_currentPlayer._hand);
+                break;
+            case CardSet.RingArea:
+                PrintCards(_currentPlayer._ringArea);
+                break;
+            case CardSet.RingsidePile:
+                PrintCards(_currentPlayer._ringSide);
+                break;
+            case CardSet.OpponentsRingArea:
+                PrintCards(_waitingPlayer._ringArea);
+                break;
+            case CardSet.OpponentsRingsidePile:
+                PrintCards(_waitingPlayer._ringSide);
+                break;
+        }
+        
+    }
+
+    private void PrintCards(List<Card> cardList)
+    {
+        List<string> stringList = new List<string>();
+        foreach (var card in cardList)
+        {
+            string cardString = Formatter.CardToString(card);
+            stringList.Add(cardString);
+        }
+        _view.ShowCards(stringList);
     }
 }
