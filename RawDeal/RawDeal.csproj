@@ -8,10 +8,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\RawDealView\RawDealView.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Update="data\cards.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>

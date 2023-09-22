@@ -7,7 +7,7 @@ namespace RawDeal
     {
         private readonly View _view;
         private readonly string _deckFolder;
-        private List<CardInfo>? _allCards;
+        private List<CardInfo>? _allCards; 
         private List<SuperstarCardInfo>? _allSuperstarCards;
         private string _p1Superstar;
         private string[] _p1Cards;
