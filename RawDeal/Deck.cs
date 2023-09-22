@@ -4,8 +4,8 @@ namespace RawDeal;
 
 public class Deck
 {
-    private Cards _allCards;
-    private string[] _deckCards;
+    public Cards _allCards;
+    public string[] _deckCards;
     private View _view;
     public SuperstarCard? _deckSuperstarCard;
     private bool _isHeel;
