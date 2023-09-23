@@ -46,6 +46,8 @@ public class Player
         if (_arsenal.Count > 0)
         {
             Card drawnCard = _arsenal[_arsenal.Count - 1];
+            int handSize = _hand.Count;
+            drawnCard.IndexHand = handSize;
             _hand.Add(drawnCard);
             _arsenal.RemoveAt(_arsenal.Count - 1);
         }
@@ -61,9 +63,25 @@ public class Player
 
     private void RemoveCardFromHand(Card card)
     {
-        _hand.Reverse();
-        _hand.Remove(card);
-        _hand.Reverse();
+        int removedIndex = card.IndexHand;
+        Console.WriteLine($"El largo de la mano1 es de {_hand.Count}");
+        _hand.RemoveAt(removedIndex);
+        Console.WriteLine($"El largo de la mano2 es de {_hand.Count}");
+        if (_hand.Count > 0)
+        {
+            FixIndex(removedIndex);
+        }
+    }
+
+    private void FixIndex(int removedIndex)
+    {   
+        var lastCard = _hand[^1];
+        for (int i = removedIndex; i < lastCard.IndexHand; i++)
+        {
+            var card = _hand[i];
+            card.IndexHand -= 1;
+            _hand[i] = card;
+        }
     }
     
     public Card LostCardForDamage()

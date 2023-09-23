@@ -185,6 +185,7 @@ public class Game
         {
             AttackOponent(card);
         }
+        else Turns();
     }
 
     private bool CheckIfAttack(Card card)
@@ -248,6 +249,11 @@ public class Game
         {
             List<string> playInfoList = GetListOfPlayInfo(playableCards);
             int selection = _view.AskUserToSelectAPlay(playInfoList);
+
+            foreach (var card in playableCards)
+            {
+                Console.WriteLine(card.IndexHand);
+            }
             if (selection == -1)
             {
                 ShowGameInfo();

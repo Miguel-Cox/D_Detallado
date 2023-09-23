@@ -11,5 +11,5 @@ public struct Card : IViewableCardInfo
     public List<string> Types { get; set; }
     public List<string> Subtypes { get; set; }
     public string CardEffect { get; set; }
-    
+    public int IndexHand { get; set; }
 }
