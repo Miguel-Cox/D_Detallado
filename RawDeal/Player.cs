@@ -10,10 +10,10 @@ public class Player
     private Deck _deck;
     public String _name;
     public List<Card> _hand = new List<Card>();
-    private List<Card> _arsenal = new List<Card>();
+    public List<Card> _arsenal = new List<Card>();
     public List<Card> _ringArea = new List<Card>();
     public List<Card> _ringSide = new List<Card>();
-    private int fortitude;
+    public int fortitude;
     public SuperstarCard _superstarCard;
     
     public PlayerInfo PlayerInfo => new(_superstarCard.Name, fortitude, _hand.Count, _arsenal.Count);
@@ -51,10 +51,25 @@ public class Player
         }
     }
 
+    public void PlayCard(Card card)
+    {
+        _hand.Remove(card);
+        _ringArea.Add(card);
+    }
+    
+    public Card LostCardForDamage()
+    {
+        Card drawnCard = _arsenal[_arsenal.Count - 1];
+        _ringSide.Add(drawnCard);
+        _arsenal.RemoveAt(_arsenal.Count - 1);
+        
+        return drawnCard;
+    }
+    
     public void StartingDraw()
     {
         int counter = 0;
-        while (counter < _superstarCard.SuperstarValue)
+        while (counter < _superstarCard.HandSize)
         {
             DrawCard();
             counter++;
