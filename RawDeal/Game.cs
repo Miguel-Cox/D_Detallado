@@ -79,7 +79,7 @@ public class Game
 
     private void ShowGameInfo()
     {
-        _view.ShowGameInfo(_player1.PlayerInfo, _player2.PlayerInfo);
+        _view.ShowGameInfo(_currentPlayer.PlayerInfo, _waitingPlayer.PlayerInfo);
     }
 
     private void SwitchPlayers()
@@ -90,10 +90,18 @@ public class Game
     private void NextTurn()
     {
         SwitchPlayers();
-        _currentPlayer.DrawCard();
-        _view.SayThatATurnBegins(_currentPlayer._name);
-        ShowGameInfo();
-        Turns();
+        if (HaveArsenal(_currentPlayer))
+        {
+            _currentPlayer.DrawCard();
+        }
+        else FinishGame(_waitingPlayer);
+
+        if (!_gameOver)
+        {
+            _view.SayThatATurnBegins(_currentPlayer._name);
+            ShowGameInfo();
+            Turns();
+        }
     }
 
     private void Turns()
@@ -177,8 +185,6 @@ public class Game
         {
             AttackOponent(card);
         }
-        
-
     }
 
     private bool CheckIfAttack(Card card)
@@ -195,9 +201,9 @@ public class Game
         int damage = int.Parse(card.Damage);
         int currentDamage = 1;
         _view.SayThatSuperstarWillTakeSomeDamage(_waitingPlayer._name, damage);
-        
-        while (currentDamage <= damage)
-        {   
+
+        while (currentDamage <= damage && !_gameOver)
+        {
             DamageOponent(currentDamage, damage);
             currentDamage++;
         }
@@ -207,48 +213,65 @@ public class Game
             ShowGameInfo();
             Turns();
         }
-        
     }
 
     private void DamageOponent(int currentDamage, int damage)
-    {   
+    {
         if (HaveArsenal(_waitingPlayer))
         {
             Card removedCard = _waitingPlayer.LostCardForDamage();
-            PlayInfo removedCardPLayInfo = GetPlayInfo(removedCard);
-            string removedCardString = Formatter.PlayToString(removedCardPLayInfo);
-            _view.ShowCardOverturnByTakingDamage(removedCardString, currentDamage, damage);   
+            string removedCardString = Formatter.CardToString(removedCard);
+            _view.ShowCardOverturnByTakingDamage(removedCardString, currentDamage, damage);
         }
         else FinishGame(_currentPlayer);
     }
-    
+
+    private bool PlayerHasPlayableCards(List<Card> playableCards)
+    {
+        if (playableCards.Count > 0)
+        {
+            return true;
+        }
+        else return false;
+    }
+
     private void ChooseCard()
     {
         List<Card> playableCards = GetPlayableCards();
-        List<string> playInfoList = GetListOfPlayInfo(playableCards);
-        int selection = _view.AskUserToSelectAPlay(playInfoList);
-        if (selection == -1)
+        if (!PlayerHasPlayableCards(playableCards))
         {
+            _view.NothingToPlay();
+            ShowGameInfo();
             Turns();
-        }else PlayCard(playableCards[selection], playInfoList[selection]);
-
+        }
+        else
+        {
+            List<string> playInfoList = GetListOfPlayInfo(playableCards);
+            int selection = _view.AskUserToSelectAPlay(playInfoList);
+            if (selection == -1)
+            {
+                ShowGameInfo();
+                Turns();
+            }
+            else PlayCard(playableCards[selection], playInfoList[selection]);
+        }
     }
 
     private List<Card> GetPlayableCards()
     {
         List<Card> filteredCards = _currentPlayer._hand
-            .Where(card => card.Subtypes.Count > 0 && IsLowerFornitude(card) && IsManeuverOrStrike(card)).ToList();
+            .Where(card => card.Types.Count > 0 && IsLowerFornitude(card) && IsManeuverOrAction(card)).ToList();
         return filteredCards;
     }
 
-    private bool IsManeuverOrStrike(Card card)
+    private bool IsManeuverOrAction(Card card)
     {
-        return (card.Types[0] == "Maneuver" || card.Types[0] == "Strike");
+        return (card.Types[0] == "Maneuver" || card.Types[0] == "Action");
     }
 
     private bool IsLowerFornitude(Card card)
     {
-        return (int.Parse(card.Fortitude) <= _currentPlayer.fortitude);
+        return (int.Parse(card.Fortitude) <= _currentPlayer.Fortitude);
     }
 
     private List<string> GetListOfPlayInfo(List<Card> filteredCards)
@@ -263,7 +286,7 @@ public class Game
 
         return playInfoList;
     }
-    
+
     private PlayInfo GetPlayInfo(Card card)
     {
         PlayInfo playInfo = new PlayInfo
@@ -282,9 +305,9 @@ public class Game
         }
         else return false;
     }
-    
+
     private void FinishGame(Player winner)
-    {   
+    {
         _gameOver = true;
         _view.CongratulateWinner(winner._name);
     }

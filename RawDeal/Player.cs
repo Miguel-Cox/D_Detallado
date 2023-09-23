@@ -13,10 +13,10 @@ public class Player
     public List<Card> _arsenal = new List<Card>();
     public List<Card> _ringArea = new List<Card>();
     public List<Card> _ringSide = new List<Card>();
-    public int fortitude;
+    public int Fortitude;
     public SuperstarCard _superstarCard;
     
-    public PlayerInfo PlayerInfo => new(_superstarCard.Name, fortitude, _hand.Count, _arsenal.Count);
+    public PlayerInfo PlayerInfo => new(_superstarCard.Name, Fortitude, _hand.Count, _arsenal.Count);
 
     public Player(View view, Deck deck)
     {
@@ -25,7 +25,7 @@ public class Player
         SaveCards();
         SaveName();
     }
-
+    
     private void SaveCards()
     {
         _superstarCard = _deck._deckSuperstarCard;
@@ -53,8 +53,17 @@ public class Player
 
     public void PlayCard(Card card)
     {
-        _hand.Remove(card);
+        RemoveCardFromHand(card);
+        int aditionalFortitude = int.Parse(card.Damage);
+        Fortitude += aditionalFortitude;
         _ringArea.Add(card);
+    }
+
+    private void RemoveCardFromHand(Card card)
+    {
+        _hand.Reverse();
+        _hand.Remove(card);
+        _hand.Reverse();
     }
     
     public Card LostCardForDamage()

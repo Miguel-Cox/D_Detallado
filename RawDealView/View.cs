@@ -239,6 +239,13 @@ public class View
         string option = _view.ReadLine();
         return option;
     }
+
+    public void NothingToPlay()
+    {   
+        ShowDivision();
+        _view.WriteLine("No hay nada que puedas jugar");
+        ShowDivision();
+    }
     
     public int AskUserToSelectAReversal(string superstarName, List<string> applicableReversals)
     {
