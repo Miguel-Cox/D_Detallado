@@ -36,8 +36,8 @@ public class Cards
     
     public Card GetCardDataByTitle(string title)
     {
-        Card obj = AllCards.FirstOrDefault(x => x.Title == title);
-        return obj;
+        Card card = AllCards.FirstOrDefault(x => x.Title == title);
+        return card;
     }
     
 }

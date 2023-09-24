@@ -34,7 +34,7 @@ public class Game
             _deck2 = new Deck(_view, deckPath2, _cards);
             return _deck2.CheckValidDeck();
         }
-
+        
         return false;
     }
 
@@ -65,21 +65,26 @@ public class Game
         }
     }
 
-    private void StartGame()
+    private void SetPlayers()
     {
         _currentPlayer = _player1;
         _waitingPlayer = _player2;
+    }
+    
+    private void StartGame()
+    {   
+        SetPlayers();
         _player1.StartingDraw();
         _player2.StartingDraw();
-        _view.SayThatATurnBegins(_currentPlayer._name);
+        _view.SayThatATurnBegins(_currentPlayer.Name);
         _currentPlayer.DrawCard();
         ShowGameInfo();
-        Turns();
     }
 
     private void ShowGameInfo()
     {
         _view.ShowGameInfo(_currentPlayer.PlayerInfo, _waitingPlayer.PlayerInfo);
+        Turns();
     }
 
     private void SwitchPlayers()
@@ -98,9 +103,8 @@ public class Game
 
         if (!_gameOver)
         {
-            _view.SayThatATurnBegins(_currentPlayer._name);
+            _view.SayThatATurnBegins(_currentPlayer.Name);
             ShowGameInfo();
-            Turns();
         }
     }
 
@@ -112,7 +116,7 @@ public class Game
 
     private void Surrender()
     {
-        _view.CongratulateWinner(_waitingPlayer._name);
+        FinishGame(_waitingPlayer);
     }
 
     private void MainMenu(string selected)
@@ -122,10 +126,10 @@ public class Game
         switch (number)
         {
             case 1:
-                ChooseCardsToSee();
+                SeePossibleCardssToSee();
                 break;
             case 2:
-                ChooseCard();
+                SeePossibleCards();
                 break;
             case 3:
                 NextTurn();
@@ -133,31 +137,29 @@ public class Game
             case 4:
                 Surrender();
                 break;
-            default:
-                break;
         }
     }
 
-    private void ChooseCardsToSee()
+    private void SeePossibleCardssToSee()
     {
         CardSet cardset = _view.AskUserWhatSetOfCardsHeWantsToSee();
 
         switch (cardset)
         {
             case CardSet.Hand:
-                PrintCards(_currentPlayer._hand);
+                PrintCards(_currentPlayer.Hand);
                 break;
             case CardSet.RingArea:
-                PrintCards(_currentPlayer._ringArea);
+                PrintCards(_currentPlayer.RingArea);
                 break;
             case CardSet.RingsidePile:
-                PrintCards(_currentPlayer._ringSide);
+                PrintCards(_currentPlayer.RingSide);
                 break;
             case CardSet.OpponentsRingArea:
-                PrintCards(_waitingPlayer._ringArea);
+                PrintCards(_waitingPlayer.RingArea);
                 break;
             case CardSet.OpponentsRingsidePile:
-                PrintCards(_waitingPlayer._ringSide);
+                PrintCards(_waitingPlayer.RingSide);
                 break;
         }
     }
@@ -173,17 +175,16 @@ public class Game
 
         _view.ShowCards(stringList);
         ShowGameInfo();
-        Turns();
     }
 
     private void PlayCard(Card card, string cardString)
     {
         _currentPlayer.PlayCard(card);
-        _view.SayThatPlayerIsTryingToPlayThisCard(_currentPlayer._name, cardString);
+        _view.SayThatPlayerIsTryingToPlayThisCard(_currentPlayer.Name, cardString);
         _view.SayThatPlayerSuccessfullyPlayedACard();
         if (CheckIfAttack(card))
         {
-            AttackOponent(card);
+            AttackOpponent(card);
         }
         else Turns();
     }
@@ -197,26 +198,25 @@ public class Game
         else return false;
     }
 
-    private void AttackOponent(Card card)
+    private void AttackOpponent(Card card)
     {
         int damage = int.Parse(card.Damage);
         int currentDamage = 1;
-        _view.SayThatSuperstarWillTakeSomeDamage(_waitingPlayer._name, damage);
+        _view.SayThatSuperstarWillTakeSomeDamage(_waitingPlayer.Name, damage);
 
         while (currentDamage <= damage && !_gameOver)
         {
-            DamageOponent(currentDamage, damage);
+            DamageOpponent(currentDamage, damage);
             currentDamage++;
         }
 
         if (!_gameOver)
         {
             ShowGameInfo();
-            Turns();
         }
     }
 
-    private void DamageOponent(int currentDamage, int damage)
+    private void DamageOpponent(int currentDamage, int damage)
     {
         if (HaveArsenal(_waitingPlayer))
         {
@@ -235,38 +235,37 @@ public class Game
         }
         else return false;
     }
-
-    private void ChooseCard()
+    
+    private void ChooseCardToPlay(List<Card> playableCards)
+    {
+        List<string> playInfoList = GetListOfPlayInfo(playableCards);
+        int selection = _view.AskUserToSelectAPlay(playInfoList);
+            
+        if (selection == -1)
+        {
+            ShowGameInfo();
+        }
+        else PlayCard(playableCards[selection], playInfoList[selection]);
+    }
+    
+    private void SeePossibleCards()
     {
         List<Card> playableCards = GetPlayableCards();
         if (!PlayerHasPlayableCards(playableCards))
         {
             _view.NothingToPlay();
             ShowGameInfo();
-            Turns();
         }
         else
         {
-            List<string> playInfoList = GetListOfPlayInfo(playableCards);
-            int selection = _view.AskUserToSelectAPlay(playInfoList);
-
-            foreach (var card in playableCards)
-            {
-                Console.WriteLine(card.IndexHand);
-            }
-            if (selection == -1)
-            {
-                ShowGameInfo();
-                Turns();
-            }
-            else PlayCard(playableCards[selection], playInfoList[selection]);
+            ChooseCardToPlay(playableCards);
         }
     }
 
     private List<Card> GetPlayableCards()
     {
-        List<Card> filteredCards = _currentPlayer._hand
-            .Where(card => card.Types.Count > 0 && IsLowerFornitude(card) && IsManeuverOrAction(card)).ToList();
+        List<Card> filteredCards = _currentPlayer.Hand
+            .Where(card => card.Types.Count > 0 && IsLowerFortitude(card) && IsManeuverOrAction(card)).ToList();
         return filteredCards;
     }
 
@@ -275,7 +274,7 @@ public class Game
         return (card.Types[0] == "Maneuver" || card.Types[0] == "Action");
     }
 
-    private bool IsLowerFornitude(Card card)
+    private bool IsLowerFortitude(Card card)
     {
         return (int.Parse(card.Fortitude) <= _currentPlayer.Fortitude);
     }
@@ -305,7 +304,7 @@ public class Game
 
     private bool HaveArsenal(Player player)
     {
-        if (player._arsenal.Count > 0)
+        if (player.Arsenal.Count > 0)
         {
             return true;
         }
@@ -315,6 +314,6 @@ public class Game
     private void FinishGame(Player winner)
     {
         _gameOver = true;
-        _view.CongratulateWinner(winner._name);
+        _view.CongratulateWinner(winner.Name);
     }
 }

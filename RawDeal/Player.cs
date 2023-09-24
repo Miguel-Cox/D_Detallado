@@ -1,6 +1,4 @@
 using RawDealView;
-using RawDealView.Formatters;
-using RawDealView.Options;
 
 namespace RawDeal;
 
@@ -8,15 +6,15 @@ public class Player
 {
     private View _view;
     private Deck _deck;
-    public String _name;
-    public List<Card> _hand = new List<Card>();
-    public List<Card> _arsenal = new List<Card>();
-    public List<Card> _ringArea = new List<Card>();
-    public List<Card> _ringSide = new List<Card>();
+    public String Name;
+    public List<Card> Hand = new List<Card>();
+    public List<Card> Arsenal = new List<Card>();
+    public List<Card> RingArea = new List<Card>();
+    public List<Card> RingSide = new List<Card>();
     public int Fortitude;
-    public SuperstarCard _superstarCard;
-    
-    public PlayerInfo PlayerInfo => new(_superstarCard.Name, Fortitude, _hand.Count, _arsenal.Count);
+    private SuperstarCard _superstarCard;
+
+    public PlayerInfo PlayerInfo => new(_superstarCard.Name, Fortitude, Hand.Count, Arsenal.Count);
 
     public Player(View view, Deck deck)
     {
@@ -25,32 +23,40 @@ public class Player
         SaveCards();
         SaveName();
     }
-    
+
     private void SaveCards()
     {
         _superstarCard = _deck._deckSuperstarCard;
         foreach (var card in _deck._deckCards.Skip(1))
         {
-            _arsenal.Add(_deck._allCards.GetCardDataByTitle(card));
+            Arsenal.Add(_deck._allCards.GetCardDataByTitle(card));
         }
-        
     }
 
     private void SaveName()
     {
-        _name = _superstarCard.Name;
+        Name = _superstarCard.Name;
     }
 
     public void DrawCard()
     {
-        if (_arsenal.Count > 0)
+        if (!IsArsenalEmpty())
         {
-            Card drawnCard = _arsenal[_arsenal.Count - 1];
-            int handSize = _hand.Count;
+            Card drawnCard = Arsenal[^1];
+            int handSize = Hand.Count;
             drawnCard.IndexHand = handSize;
-            _hand.Add(drawnCard);
-            _arsenal.RemoveAt(_arsenal.Count - 1);
+            Hand.Add(drawnCard);
+            Arsenal.RemoveAt(Arsenal.Count - 1);
         }
+    }
+
+    private bool IsArsenalEmpty()
+    {
+        if (Arsenal.Count == 0)
+        {
+            return true;
+        }
+        else return false;
     }
 
     public void PlayCard(Card card)
@@ -58,41 +64,39 @@ public class Player
         RemoveCardFromHand(card);
         int aditionalFortitude = int.Parse(card.Damage);
         Fortitude += aditionalFortitude;
-        _ringArea.Add(card);
+        RingArea.Add(card);
     }
 
     private void RemoveCardFromHand(Card card)
     {
         int removedIndex = card.IndexHand;
-        Console.WriteLine($"El largo de la mano1 es de {_hand.Count}");
-        _hand.RemoveAt(removedIndex);
-        Console.WriteLine($"El largo de la mano2 es de {_hand.Count}");
-        if (_hand.Count > 0)
+        Hand.RemoveAt(removedIndex);
+        if (Hand.Count > 0)
         {
             FixIndex(removedIndex);
         }
     }
 
     private void FixIndex(int removedIndex)
-    {   
-        var lastCard = _hand[^1];
+    {
+        var lastCard = Hand[^1];
         for (int i = removedIndex; i < lastCard.IndexHand; i++)
         {
-            var card = _hand[i];
+            var card = Hand[i];
             card.IndexHand -= 1;
-            _hand[i] = card;
+            Hand[i] = card;
         }
     }
-    
+
     public Card LostCardForDamage()
     {
-        Card drawnCard = _arsenal[_arsenal.Count - 1];
-        _ringSide.Add(drawnCard);
-        _arsenal.RemoveAt(_arsenal.Count - 1);
-        
+        Card drawnCard = Arsenal[^1];
+        RingSide.Add(drawnCard);
+        Arsenal.RemoveAt(Arsenal.Count - 1);
+
         return drawnCard;
     }
-    
+
     public void StartingDraw()
     {
         int counter = 0;
@@ -102,7 +106,7 @@ public class Player
             counter++;
         }
     }
-    
+
     public string ShowPlayOptions()
     {
         string selectedOption = _view.ShowPlayerOptions();
