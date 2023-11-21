@@ -71,23 +71,22 @@ public class Player
 
     public void PlayCard(Card card)
     {
-        RemoveCardFromHand(card);
+        RemoveCardFromHand(card.IndexHand);
         int aditionalFortitude = int.Parse(card.Damage);
         Fortitude += aditionalFortitude;
         RingArea.Add(card);
     }
 
-    private void RemoveCardFromHand(Card card)
+    public void RemoveCardFromHand(int removedIndex)
     {
-        int removedIndex = card.IndexHand;
         Hand.RemoveAt(removedIndex);
         if (Hand.Count > 0)
         {
-            FixIndex(removedIndex);
+            FixIndexHand(removedIndex);
         }
     }
 
-    private void FixIndex(int removedIndex)
+    private void FixIndexHand(int removedIndex)
     {
         var lastCard = Hand[^1];
         for (int i = removedIndex; i < lastCard.IndexHand; i++)
@@ -123,7 +122,13 @@ public class Player
         return selectedOption;
     }
     
-    public void RecoverCardFromRingSide(int index)
+    public string ShowPlayOptionsForSuperstar()
+    {
+        string selectedOption = _view.ShowSpecialPlayerOptions();
+        return selectedOption;
+    }
+    
+    public void RecoverCardFromRingSideToArsenal(int index)
     {
         Card card = RingSide[index];
         RingSide.RemoveAt(index);
@@ -132,6 +137,30 @@ public class Player
         if (RingSide.Count > 0)
         {
             FixIndexRingSide(index);
+        }
+    }
+    
+    public void RecoverCardFromRingSideToHand(int index)
+    {
+        Card card = RingSide[index];
+        RingSide.RemoveAt(index);
+        Hand.Add(card);
+
+        if (RingSide.Count > 0)
+        {
+            FixIndexRingSide(index);
+        }
+    }
+    
+    public void DiscardCardFromHand(int index)
+    {
+        Card card = Hand[index];
+        Hand.RemoveAt(index);
+        RingSide.Add(card);
+
+        if (Hand.Count > 0)
+        {
+            FixIndexHand(index);
         }
     }
     

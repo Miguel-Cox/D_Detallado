@@ -103,6 +103,7 @@ public class Game
     private void NextTurn()
     {
         SwitchPlayers();
+        RenewAbilities();
         HandlePlayerTurn();
         
         if (!_gameOver)
@@ -110,6 +111,14 @@ public class Game
             _view.SayThatATurnBegins(CurrentPlayer.Name);
             CheckSuperStarTurnAbility();
             ShowGameInfo();
+        }
+    }
+
+    private void RenewAbilities()
+    {
+        if (WaitingPlayer.SuperstarCard.HasAbilityOption)
+        {
+            WaitingPlayer.SuperstarCard.UsedAbility = false;
         }
     }
     
@@ -124,7 +133,6 @@ public class Game
 
     private void HandlePlayerTurn()
     {   
-        
         if (HaveArsenal(CurrentPlayer))
         {
             CurrentPlayer.DrawCard();
@@ -136,9 +144,20 @@ public class Game
     }
 
     private void Turns()
-    {   
-        var selected = CurrentPlayer.ShowPlayOptions();
-        ShowMainMenu(selected);
+    {
+        string selected;
+        if (CurrentPlayer.SuperstarCard.HasAbilityOption && CurrentPlayer.SuperstarCard.HaveAbilityRequirements())
+        {
+            selected = CurrentPlayer.ShowPlayOptionsForSuperstar();
+            ShowSpecialMainMenu(selected);
+        }
+        else
+        {
+            selected = CurrentPlayer.ShowPlayOptions();
+            ShowMainMenu(selected);
+        }
+        
+        
     }
     
     private void ShowMainMenu(string selected)
@@ -157,6 +176,31 @@ public class Game
                 NextTurn();
                 break;
             case 4:
+                Surrender();
+                break;
+        }
+    }
+    
+    private void ShowSpecialMainMenu(string selected)
+    {
+        int number = int.Parse(selected);
+
+        switch (number)
+        {
+            case 1:
+                PossibleCardsToSee();
+                break;
+            case 2:
+                SeePossibleCardsToPlay();
+                break;
+            case 3:
+                CurrentPlayer.SuperstarCard.Ability();
+                ShowGameInfo();
+                break;
+            case 4:
+                NextTurn();
+                break;
+            case 5:
                 Surrender();
                 break;
         }
