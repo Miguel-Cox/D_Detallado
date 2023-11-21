@@ -86,6 +86,7 @@ public class Game
         _player2.StartingDraw();
         _view.SayThatATurnBegins(CurrentPlayer.Name);
         CurrentPlayer.DrawCard();
+        CheckSuperStarTurnAbility();
         ShowGameInfo();
     }
 
@@ -253,7 +254,11 @@ public class Game
         _view.SayThatPlayerSuccessfullyPlayedACard();
         if (CheckIfAttack(card))
         {
-            AttackOpponent(card);
+            int damage = GetCardDamage(card);
+            if (damage > 0)
+            {
+                AttackOpponent(damage);
+            }
         }
         else Turns();
     }
@@ -267,12 +272,12 @@ public class Game
         else return false;
     }
 
-    private void AttackOpponent(Card card)
+    private void AttackOpponent(int damage)
     {
-        int damage = int.Parse(card.Damage);
         int currentDamage = 1;
+        
         _view.SayThatSuperstarWillTakeSomeDamage(WaitingPlayer.Name, damage);
-
+        
         while (currentDamage <= damage && !_gameOver)
         {
             DamageOpponent(currentDamage, damage);
@@ -283,6 +288,16 @@ public class Game
         {
             ShowGameInfo();
         }
+    }
+
+    private int GetCardDamage(Card card)
+    {
+        int damage = int.Parse(card.Damage);
+        if (WaitingPlayer.SuperstarCard.Name == "MANKIND")
+        {
+            return damage - 1;
+        }
+        else return damage;
     }
 
     public void DamageOpponent(int currentDamage, int damage)

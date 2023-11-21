@@ -44,10 +44,6 @@ public class HHH : SuperstarCard
         HasAbilityOption = false;
         HasBeginningAbility = false;
     }
-
-    public void Ability()
-    {
-    }
 }
 
 public class Kane : SuperstarCard
@@ -279,10 +275,21 @@ public class Mankind : SuperstarCard
         SuperstarAbility =
             "You must always draw 2 cards, if possible, during your draw segment. All damage from opponent is at -1D.";
         HasAbilityOption = false;
+        HasBeginningAbility = true;
+        UsedAbility = false;
+        
     }
 
-    public void Ability()
+    public override void Ability()
     {
+        if (HaveAbilityRequirements())
+        {
+            Player.DrawCard();
+        }
+    }
+    private bool HaveAbilityRequirements()
+    {
+        return (Player.Arsenal.Count >= 2);
     }
 }
 
