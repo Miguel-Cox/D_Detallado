@@ -175,6 +175,18 @@ public class Player
         }
     }
     
+    public void RemoveCardFromHandToArsenal(int index)
+    {
+        Card card = Hand[index];
+        Hand.RemoveAt(index);
+        Arsenal.Insert(0, card);
+
+        if (Hand.Count > 0)
+        {
+            FixIndexHand(index);
+        }
+    }
+    
 }
 
 // private void IsFullMenuOptions() {}

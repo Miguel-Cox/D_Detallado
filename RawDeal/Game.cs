@@ -133,7 +133,8 @@ public class Game
     }
 
     private void HandlePlayerTurn()
-    {   
+    {
+        CheckEnemyArsenal();
         if (HaveArsenal(CurrentPlayer))
         {
             CurrentPlayer.DrawCard();
@@ -144,6 +145,13 @@ public class Game
         }
     }
 
+    private void CheckEnemyArsenal()
+    {
+        if (WaitingPlayer.Arsenal.Count <= 0)
+        {
+            FinishGame(CurrentPlayer);
+        }
+    }
     private void Turns()
     {
         string selected;
