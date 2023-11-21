@@ -385,4 +385,29 @@ public class Game
         _gameOver = true;
         _view.CongratulateWinner(winner.Name);
     }
+
+    public void DiscardOpponentCard()
+    {
+        List<string> HandStringCards = GetHandStringCards();
+        int CardIndex = _view.AskPlayerToSelectACardToDiscard(HandStringCards, WaitingPlayer.SuperstarCard.Name, 
+            WaitingPlayer.SuperstarCard.Name, 1);
+        WaitingPlayer.DiscardCardFromHand(CardIndex);
+    }
+    private List<string> GetHandStringCards()
+    {
+        List<Card> HandCards = GetHandCards();
+        List<string> stringCards = new List<string>();
+        foreach (var card in HandCards)
+        {
+            string cardString = Formatter.CardToString(card);
+            stringCards.Add(cardString);
+        }
+
+        return stringCards;
+    }
+    private List<Card> GetHandCards()
+    {
+        List<Card> Hand = WaitingPlayer.Hand;
+        return Hand;
+    }
 }
