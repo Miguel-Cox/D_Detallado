@@ -6140,19 +6140,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Miguel Cox\\.nuget\\packages\\": {}
+    "/Users/mac/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Miguel Cox\\RiderProjects\\D_Detallado\\RawDeal.Tests\\RawDeal.Tests.csproj",
+      "projectUniqueName": "/Users/mac/Developer/D_Detallado/RawDeal.Tests/RawDeal.Tests.csproj",
       "projectName": "RawDeal.Tests",
-      "projectPath": "C:\\Users\\Miguel Cox\\RiderProjects\\D_Detallado\\RawDeal.Tests\\RawDeal.Tests.csproj",
-      "packagesPath": "C:\\Users\\Miguel Cox\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Miguel Cox\\RiderProjects\\D_Detallado\\RawDeal.Tests\\obj\\",
+      "projectPath": "/Users/mac/Developer/D_Detallado/RawDeal.Tests/RawDeal.Tests.csproj",
+      "packagesPath": "/Users/mac/.nuget/packages/",
+      "outputPath": "/Users/mac/Developer/D_Detallado/RawDeal.Tests/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Miguel Cox\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/Users/mac/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
@@ -6164,11 +6164,11 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\Miguel Cox\\RiderProjects\\D_Detallado\\RawDealView\\RawDealView.csproj": {
-              "projectPath": "C:\\Users\\Miguel Cox\\RiderProjects\\D_Detallado\\RawDealView\\RawDealView.csproj"
+            "/Users/mac/Developer/D_Detallado/RawDeal/RawDeal.csproj": {
+              "projectPath": "/Users/mac/Developer/D_Detallado/RawDeal/RawDeal.csproj"
             },
-            "C:\\Users\\Miguel Cox\\RiderProjects\\D_Detallado\\RawDeal\\RawDeal.csproj": {
-              "projectPath": "C:\\Users\\Miguel Cox\\RiderProjects\\D_Detallado\\RawDeal\\RawDeal.csproj"
+            "/Users/mac/Developer/D_Detallado/RawDealView/RawDealView.csproj": {
+              "projectPath": "/Users/mac/Developer/D_Detallado/RawDealView/RawDealView.csproj"
             }
           }
         }
@@ -6215,26 +6215,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[6.0.21, 6.0.21]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[6.0.21, 6.0.21]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[6.0.21, 6.0.21]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.402/RuntimeIdentifierGraph.json"
       }
     }
   }

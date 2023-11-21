@@ -4,10 +4,10 @@ namespace RawDeal;
 
 public class Deck
 {
-    public Cards _allCards;
-    public string[] _deckCards;
+    public Cards AllCards;
+    public string[] DeckCards;
     private View _view;
-    public SuperstarCard? _deckSuperstarCard;
+    public SuperstarCard? DeckSuperstarCard;
     private bool _isHeel;
     private bool _isFace;
 
@@ -15,15 +15,15 @@ public class Deck
     public Deck(View view, string path, Cards allCards)
     {
         _view = view;
-        _deckCards = File.ReadAllLines(path);
-        _allCards = allCards;
+        DeckCards = File.ReadAllLines(path);
+        AllCards = allCards;
         GetSuperstarCard();
     }
 
 
     private void GetSuperstarCard()
     {
-        string card = _deckCards[0];
+        string card = DeckCards[0];
         int cardNewLength = card.Length - 17;
         string superstarName = card.Substring(0, cardNewLength);
         
@@ -32,18 +32,19 @@ public class Deck
 
     private void SaveSuperstarCard(string superstarName)
     {
-        foreach (var superstarCard in _allCards.AllSuperstarCards)
+        foreach (var superstarCard in AllCards.AllSuperstarCards)
         {
             if (superstarCard.Name == superstarName)
             {
-                _deckSuperstarCard = superstarCard;
+                DeckSuperstarCard = superstarCard;
             }
         }
     }
 
     private bool CheckLength()
     {
-        return _deckCards.Length != 61;
+        var correctLength = 61;
+        return DeckCards.Length != correctLength;
     }
 
     private void ContainHeelOrFace(Card cardInfo)
@@ -61,9 +62,9 @@ public class Deck
 
     private bool CheckSubtype()
     {
-        foreach (var card in _deckCards.Skip(1))
+        foreach (var card in DeckCards.Skip(1))
         {
-            Card cardInfo = _allCards.GetCardDataByTitle(card);
+            Card cardInfo = AllCards.GetCardDataByTitle(card);
             ContainHeelOrFace(cardInfo);
         }
 
@@ -72,32 +73,39 @@ public class Deck
 
     private bool CheckCount()
     {
-        return _deckCards.Skip(1).Any(card =>
+        return DeckCards.Skip(1).Any(card =>
         {
-            var count = _deckCards.Count(str => str == card);
-            var cardInfo = _allCards.GetCardDataByTitle(card);
-            return (cardInfo.Subtypes.Contains("Unique") && count > 1) ||
-                   (count > 3 && !cardInfo.Subtypes.Contains("SetUp"));
+            const int maxHandCount = 3;
+            const int maxCountUniques = 1;
+            var count = DeckCards.Count(str => str == card);
+            var cardInfo = AllCards.GetCardDataByTitle(card);
+            return (cardInfo.Subtypes.Contains("Unique") && count > maxCountUniques) ||
+                   (count > maxHandCount && !cardInfo.Subtypes.Contains("SetUp"));
         });
     }
 
     private bool SuperstarSubtypeCheck(Card cardInfo)
     {
-        foreach (SuperstarCard superstarCard in _allCards.AllSuperstarCards)
+        foreach (SuperstarCard superstarCard in AllCards.AllSuperstarCards)
         {
-            if (cardInfo.Subtypes.Contains(superstarCard.Logo) && superstarCard.Logo != _deckSuperstarCard?.Logo)
+            if (IsSuperstarSubtypeMatch(cardInfo, superstarCard))
             {
                 return true;
             }
         }
         return false;
     }
+
+    private bool IsSuperstarSubtypeMatch(Card cardInfo, SuperstarCard superstarCard)
+    {
+        return cardInfo.Subtypes.Contains(superstarCard.Logo) && superstarCard.Logo != DeckSuperstarCard?.Logo;
+    }
     
     private bool CheckSuperstarSubtype()
     {
-        foreach (var card in _deckCards.Skip(1))
+        foreach (var card in DeckCards.Skip(1))
         {
-            var cardInfo = _allCards.GetCardDataByTitle(card);
+            var cardInfo = AllCards.GetCardDataByTitle(card);
             if (SuperstarSubtypeCheck(cardInfo))
             {
                 return true;

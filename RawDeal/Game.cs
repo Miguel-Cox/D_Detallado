@@ -13,8 +13,8 @@ public class Game
     private Deck _deck2;
     private Player _player1;
     private Player _player2;
-    private Player _currentPlayer;
-    private Player _waitingPlayer;
+    public Player CurrentPlayer;
+    public Player WaitingPlayer;
     private bool _gameOver;
 
     public Game(View view, string deckFolder)
@@ -40,11 +40,19 @@ public class Game
 
     private Deck GetStarterDeck()
     {
-        if (_deck2._deckSuperstarCard.SuperstarValue > _deck1._deckSuperstarCard.SuperstarValue)
+        if (IsDeck2Superior())
         {
             return _deck2;
         }
-        else return _deck1;
+        else
+        {
+            return _deck1;
+        }
+    }
+
+    private bool IsDeck2Superior()
+    {
+        return _deck2.DeckSuperstarCard.SuperstarValue > _deck1.DeckSuperstarCard.SuperstarValue;
     }
 
     private void CreatePlayers()
@@ -52,8 +60,14 @@ public class Game
         Deck p1Deck = GetStarterDeck();
         Deck p2Deck = (p1Deck == _deck1) ? _deck2 : _deck1;
 
-        _player1 = new Player(_view, p1Deck);
-        _player2 = new Player(_view, p2Deck);
+        _player1 = new Player(_view, p1Deck, this);
+        _player2 = new Player(_view, p2Deck, this);
+    }
+    
+    private void SetPlayers()
+    {
+        CurrentPlayer = _player1;
+        WaitingPlayer = _player2;
     }
 
     public void Play()
@@ -64,72 +78,80 @@ public class Game
             StartGame();
         }
     }
-
-    private void SetPlayers()
-    {
-        _currentPlayer = _player1;
-        _waitingPlayer = _player2;
-    }
     
     private void StartGame()
     {   
         SetPlayers();
         _player1.StartingDraw();
         _player2.StartingDraw();
-        _view.SayThatATurnBegins(_currentPlayer.Name);
-        _currentPlayer.DrawCard();
+        _view.SayThatATurnBegins(CurrentPlayer.Name);
+        CurrentPlayer.DrawCard();
         ShowGameInfo();
     }
 
     private void ShowGameInfo()
     {
-        _view.ShowGameInfo(_currentPlayer.PlayerInfo, _waitingPlayer.PlayerInfo);
+        _view.ShowGameInfo(CurrentPlayer.PlayerInfo, WaitingPlayer.PlayerInfo);
         Turns();
     }
 
     private void SwitchPlayers()
     {
-        (_currentPlayer, _waitingPlayer) = (_waitingPlayer, _currentPlayer);
+        (CurrentPlayer, WaitingPlayer) = (WaitingPlayer, CurrentPlayer);
     }
 
     private void NextTurn()
     {
         SwitchPlayers();
-        if (HaveArsenal(_currentPlayer))
-        {
-            _currentPlayer.DrawCard();
-        }
-        else FinishGame(_waitingPlayer);
-
+        HandlePlayerTurn();
+        
         if (!_gameOver)
         {
-            _view.SayThatATurnBegins(_currentPlayer.Name);
+            _view.SayThatATurnBegins(CurrentPlayer.Name);
+            CheckSuperStarTurnAbility();
             ShowGameInfo();
+        }
+    }
+    
+    private void CheckSuperStarTurnAbility()
+    {
+        SuperstarCard superstarCard = CurrentPlayer.SuperstarCard;
+        if (superstarCard.HasBeginningAbility)
+        {
+            superstarCard.Ability();
+        }
+    }
+
+    private void HandlePlayerTurn()
+    {   
+        
+        if (HaveArsenal(CurrentPlayer))
+        {
+            CurrentPlayer.DrawCard();
+        }
+        else
+        {
+            FinishGame(WaitingPlayer);
         }
     }
 
     private void Turns()
-    {
-        var selected = _currentPlayer.ShowPlayOptions();
-        MainMenu(selected);
+    {   
+        var selected = CurrentPlayer.ShowPlayOptions();
+        ShowMainMenu(selected);
     }
-
-    private void Surrender()
-    {
-        FinishGame(_waitingPlayer);
-    }
-
-    private void MainMenu(string selected)
+    
+    private void ShowMainMenu(string selected)
     {
         int number = int.Parse(selected);
 
         switch (number)
         {
             case 1:
-                SeePossibleCardssToSee();
+                PossibleCardsToSee();
                 break;
             case 2:
-                SeePossibleCards();
+                SeePossibleCardsToPlay();
                 break;
             case 3:
                 NextTurn();
@@ -139,27 +161,30 @@ public class Game
                 break;
         }
     }
-
-    private void SeePossibleCardssToSee()
+    private void Surrender()
+    {
+        FinishGame(WaitingPlayer);
+    }
+    private void PossibleCardsToSee()
     {
         CardSet cardset = _view.AskUserWhatSetOfCardsHeWantsToSee();
 
         switch (cardset)
         {
             case CardSet.Hand:
-                PrintCards(_currentPlayer.Hand);
+                PrintCards(CurrentPlayer.Hand);
                 break;
             case CardSet.RingArea:
-                PrintCards(_currentPlayer.RingArea);
+                PrintCards(CurrentPlayer.RingArea);
                 break;
             case CardSet.RingsidePile:
-                PrintCards(_currentPlayer.RingSide);
+                PrintCards(CurrentPlayer.RingSide);
                 break;
             case CardSet.OpponentsRingArea:
-                PrintCards(_waitingPlayer.RingArea);
+                PrintCards(WaitingPlayer.RingArea);
                 break;
             case CardSet.OpponentsRingsidePile:
-                PrintCards(_waitingPlayer.RingSide);
+                PrintCards(WaitingPlayer.RingSide);
                 break;
         }
     }
@@ -179,8 +204,8 @@ public class Game
 
     private void PlayCard(Card card, string cardString)
     {
-        _currentPlayer.PlayCard(card);
-        _view.SayThatPlayerIsTryingToPlayThisCard(_currentPlayer.Name, cardString);
+        CurrentPlayer.PlayCard(card);
+        _view.SayThatPlayerIsTryingToPlayThisCard(CurrentPlayer.Name, cardString);
         _view.SayThatPlayerSuccessfullyPlayedACard();
         if (CheckIfAttack(card))
         {
@@ -202,7 +227,7 @@ public class Game
     {
         int damage = int.Parse(card.Damage);
         int currentDamage = 1;
-        _view.SayThatSuperstarWillTakeSomeDamage(_waitingPlayer.Name, damage);
+        _view.SayThatSuperstarWillTakeSomeDamage(WaitingPlayer.Name, damage);
 
         while (currentDamage <= damage && !_gameOver)
         {
@@ -216,15 +241,15 @@ public class Game
         }
     }
 
-    private void DamageOpponent(int currentDamage, int damage)
+    public void DamageOpponent(int currentDamage, int damage)
     {
-        if (HaveArsenal(_waitingPlayer))
+        if (HaveArsenal(WaitingPlayer))
         {
-            Card removedCard = _waitingPlayer.LostCardForDamage();
+            Card removedCard = WaitingPlayer.LostCardForDamage();
             string removedCardString = Formatter.CardToString(removedCard);
             _view.ShowCardOverturnByTakingDamage(removedCardString, currentDamage, damage);
         }
-        else FinishGame(_currentPlayer);
+        else FinishGame(CurrentPlayer);
     }
 
     private bool PlayerHasPlayableCards(List<Card> playableCards)
@@ -248,7 +273,7 @@ public class Game
         else PlayCard(playableCards[selection], playInfoList[selection]);
     }
     
-    private void SeePossibleCards()
+    private void SeePossibleCardsToPlay()
     {
         List<Card> playableCards = GetPlayableCards();
         if (!PlayerHasPlayableCards(playableCards))
@@ -264,7 +289,7 @@ public class Game
 
     private List<Card> GetPlayableCards()
     {
-        List<Card> filteredCards = _currentPlayer.Hand
+        List<Card> filteredCards = CurrentPlayer.Hand
             .Where(card => card.Types.Count > 0 && IsLowerFortitude(card) && IsManeuverOrAction(card)).ToList();
         return filteredCards;
     }
@@ -276,7 +301,7 @@ public class Game
 
     private bool IsLowerFortitude(Card card)
     {
-        return (int.Parse(card.Fortitude) <= _currentPlayer.Fortitude);
+        return (int.Parse(card.Fortitude) <= CurrentPlayer.Fortitude);
     }
 
     private List<string> GetListOfPlayInfo(List<Card> filteredCards)

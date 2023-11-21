@@ -239,7 +239,18 @@ public class View
         string option = _view.ReadLine();
         return option;
     }
-
+    public string ShowSpecialPlayerOptions()
+    {
+        _view.WriteLine("1- Ver cartas");
+        _view.WriteLine("2- Jugar carta");
+        _view.WriteLine("3- Usar habilidad");
+        _view.WriteLine("4- Terminar turno");
+        _view.WriteLine("5- Rendirse");
+        _view.WriteLine("(Ingresa un número entre 1 y 5)");
+        string option = _view.ReadLine();
+        return option;
+    }
+    
     public void NothingToPlay()
     {   
         ShowDivision();

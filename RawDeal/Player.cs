@@ -11,31 +11,41 @@ public class Player
     public List<Card> Arsenal = new List<Card>();
     public List<Card> RingArea = new List<Card>();
     public List<Card> RingSide = new List<Card>();
+    public Game Game;
     public int Fortitude;
-    private SuperstarCard _superstarCard;
+    public SuperstarCard SuperstarCard;
 
-    public PlayerInfo PlayerInfo => new(_superstarCard.Name, Fortitude, Hand.Count, Arsenal.Count);
+    public PlayerInfo PlayerInfo => new(SuperstarCard.Name, Fortitude, Hand.Count, Arsenal.Count);
 
-    public Player(View view, Deck deck)
+    public Player(View view, Deck deck, Game game)
     {
         _view = view;
         _deck = deck;
+        Game = game;
         SaveCards();
         SaveName();
     }
 
     private void SaveCards()
     {
-        _superstarCard = _deck._deckSuperstarCard;
-        foreach (var card in _deck._deckCards.Skip(1))
+        SaveSuperStarCard();
+        foreach (var card in _deck.DeckCards.Skip(1))
         {
-            Arsenal.Add(_deck._allCards.GetCardDataByTitle(card));
+            Arsenal.Add(_deck.AllCards.GetCardDataByTitle(card));
         }
     }
+    
+    private void SaveSuperStarCard()
+    {
+        SuperstarCard = _deck.DeckSuperstarCard;
+        SuperstarCard.Player = this;
+        SuperstarCard.Game = Game;
+        SuperstarCard.View = _view;
 
+    }
     private void SaveName()
     {
-        Name = _superstarCard.Name;
+        Name = SuperstarCard.Name;
     }
 
     public void DrawCard()
@@ -50,7 +60,7 @@ public class Player
         }
     }
 
-    private bool IsArsenalEmpty()
+    public bool IsArsenalEmpty()
     {
         if (Arsenal.Count == 0)
         {
@@ -100,7 +110,7 @@ public class Player
     public void StartingDraw()
     {
         int counter = 0;
-        while (counter < _superstarCard.HandSize)
+        while (counter < SuperstarCard.HandSize)
         {
             DrawCard();
             counter++;
@@ -112,4 +122,30 @@ public class Player
         string selectedOption = _view.ShowPlayerOptions();
         return selectedOption;
     }
+    
+    public void RecoverCardFromRingSide(int index)
+    {
+        Card card = RingSide[index];
+        RingSide.RemoveAt(index);
+        Arsenal.Insert(0, card);
+
+        if (RingSide.Count > 0)
+        {
+            FixIndexRingSide(index);
+        }
+    }
+    
+    private void FixIndexRingSide(int removedIndex)
+    {
+        var lastCard = RingSide[^1];
+        for (int i = removedIndex; i < lastCard.IndexRingSide; i++)
+        {
+            var card = RingSide[i];
+            card.IndexRingSide -= 1;
+            RingSide[i] = card;
+        }
+    }
+    
 }
+
+// private void IsFullMenuOptions() {}
