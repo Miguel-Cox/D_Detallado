@@ -24,7 +24,7 @@ public class Game
     }
 
     private bool CheckStartRequirements()
-    {
+    {   
         string deckPath = _view.AskUserToSelectDeck(_deckFolder);
         _deck1 = new Deck(_view, deckPath, _cards);
 
@@ -255,29 +255,49 @@ public class Game
         ShowGameInfo();
     }
 
-    private void PlayCard(Card card, string cardString)
+    private void PlayCard(Card card, string cardString, string playedCardType)
     {
-        CurrentPlayer.PlayCard(card);
         _view.SayThatPlayerIsTryingToPlayThisCard(CurrentPlayer.Name, cardString);
         _view.SayThatPlayerSuccessfullyPlayedACard();
-        if (CheckIfAttack(card))
-        {
-            int damage = GetCardDamage(card);
-            if (damage > 0)
-            {
-                AttackOpponent(damage);
-            }
-        }
-        else Turns();
+        ActionBasedOnType(card, playedCardType);
+        
+        
     }
-
-    private bool CheckIfAttack(Card card)
+    
+    private void ActionBasedOnType(Card card, string playedCardType)
     {
-        if (card.Types[0] == "Maneuver")
+        switch (playedCardType)
         {
-            return true;
+            case "ACTION":
+                // Actions for when the card type is ACTION
+                _view.SayThatPlayerMustDiscardThisCard(CurrentPlayer.Name, card.Title);
+                CurrentPlayer.DiscardCardFromHand(card.IndexHand);
+                CurrentPlayer.DrawCard();
+                _view.SayThatPlayerDrawCards(CurrentPlayer.Name, 1);
+            
+                ShowGameInfo();
+                break;
+
+            case "MANEUVER":
+                // Actions for when the card type is MANEUVER
+                CurrentPlayer.PlayCard(card);
+            
+                int damage = GetCardDamage(card);
+                if (damage > 0)
+                {
+                    AttackOpponent(damage);
+                }
+                else
+                {
+                    ShowGameInfo();
+                }
+                break;
+
+            default:
+                // Actions for when the card type is neither ACTION nor MANEUVER
+                Turns();
+                break;
         }
-        else return false;
     }
 
     private void AttackOpponent(int damage)
@@ -330,16 +350,40 @@ public class Game
     
     private void ChooseCardToPlay(List<Card> playableCards)
     {
-        List<string> playInfoList = GetListOfPlayInfo(playableCards);
-        int selection = _view.AskUserToSelectAPlay(playInfoList);
+        List<PlayInfo> playInfoList = GetListOfPlayInfo(playableCards);
+        List<string> playStringList = GetStringListOfPlayInfo(playInfoList);
+        int selection = _view.AskUserToSelectAPlay(playStringList);
             
         if (selection == -1)
         {
             ShowGameInfo();
         }
-        else PlayCard(playableCards[selection], playInfoList[selection]);
+        else
+        {   
+            string playedCardType = playInfoList[selection].PlayedAs;
+            Card card = playInfoList[selection].Card;
+            PlayCard(card, playStringList[selection], playedCardType);
+        }
     }
     
+    private List<string> GetStringListOfPlayInfo(List<PlayInfo> playInfoList)
+    {
+        
+        List<string> stringList = new List<string>();
+        foreach (var playInfo in playInfoList)
+        {
+            string playInfoString = Formatter.PlayToString(playInfo);
+            stringList.Add(playInfoString);
+        }
+        return stringList;
+    }
+
+    private string GetPlayedCardType(int selection, List<string> playInfoList)
+    {
+        string[] playInfo = playInfoList[selection].Split(" ");
+        return playInfo[0];
+    }
+
     private void SeePossibleCardsToPlay()
     {
         List<Card> playableCards = GetPlayableCards();
@@ -371,25 +415,46 @@ public class Game
         return (int.Parse(card.Fortitude) <= CurrentPlayer.Fortitude);
     }
 
-    private List<string> GetListOfPlayInfo(List<Card> filteredCards)
+    private List<PlayInfo> GetListOfPlayInfo(List<Card> filteredCards)
     {
-        List<string> playInfoList = new List<string>();
+        List<PlayInfo> playInfoList = new List<PlayInfo>();
         foreach (var card in filteredCards)
         {
-            PlayInfo playInfo = GetPlayInfo(card);
-            string playInfoString = Formatter.PlayToString(playInfo);
-            playInfoList.Add(playInfoString);
+            if (IsHybridCard(card))
+            {
+                AddPlayInfoToList(playInfoList, card, "action");
+                AddPlayInfoToList(playInfoList, card, "maneuver");
+            }
+            else
+            {
+                AddPlayInfoToList(playInfoList, card, card.Types[0]);
+            }
         }
-
         return playInfoList;
     }
 
-    private PlayInfo GetPlayInfo(Card card)
+    private void AddPlayInfoToList(List<PlayInfo> playInfoList, Card card, string type)
+    {
+        PlayInfo playInfo = GetPlayInfo(card, type);
+        playInfoList.Add(playInfo);
+    }
+    
+    private bool IsHybridCard(Card card)
+    {
+        if (card.Types.Contains("Action") && card.Types.Contains("Maneuver"))
+        {
+            return true;
+        }
+        return false;
+    }
+    
+    private PlayInfo GetPlayInfo(Card card, string type)
     {
         PlayInfo playInfo = new PlayInfo
         {
             CardInfo = card,
-            PlayedAs = card.Types[0].ToUpper()
+            PlayedAs = type.ToUpper(),
+            Card = card
         };
         return playInfo;
     }

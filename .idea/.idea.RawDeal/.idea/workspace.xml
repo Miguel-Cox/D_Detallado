@@ -16,8 +16,11 @@
       <change beforePath="$PROJECT_DIR$/RawDeal.Tests/obj/Debug/net6.0/RawDeal.Tests.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal.Tests/obj/Debug/net6.0/RawDeal.Tests.csproj.AssemblyReference.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RawDeal.Tests/obj/Debug/net6.0/RawDeal.Tests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal.Tests/obj/Debug/net6.0/RawDeal.Tests.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RawDeal.Tests/obj/Debug/net6.0/RawDeal.Tests.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal.Tests/obj/Debug/net6.0/RawDeal.Tests.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal/Card.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/Card.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/Game.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal/PlayInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/PlayInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RawDeal/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/Player.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RawDeal/SuperstarCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/SuperstarCard.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RawDeal/bin/Debug/net6.0/RawDeal.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/bin/Debug/net6.0/RawDeal.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RawDeal/bin/Debug/net6.0/RawDeal.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/bin/Debug/net6.0/RawDeal.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RawDeal/obj/Debug/net6.0/RawDeal.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/obj/Debug/net6.0/RawDeal.dll" afterDir="false" />
@@ -95,7 +98,7 @@
       <option name="presentableId" value="Default" />
       <updated>1700337432327</updated>
       <workItem from="1700337434248" duration="9965000" />
-      <workItem from="1700516623508" duration="24157000" />
+      <workItem from="1700516623508" duration="43122000" />
     </task>
     <servers />
   </component>

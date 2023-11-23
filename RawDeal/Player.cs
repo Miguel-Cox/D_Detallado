@@ -187,6 +187,12 @@ public class Player
         }
     }
     
+    public Card GetHandCardByTitle(string title)
+    {
+        Card card = Hand.FirstOrDefault(x => x.Title == title);
+        return card;
+    }
+    
 }
 
 // private void IsFullMenuOptions() {}
