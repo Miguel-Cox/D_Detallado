@@ -79,20 +79,24 @@ public class Player
 
     public void RemoveCardFromHand(int removedIndex)
     {
+        foreach (var card in Hand)
+        {
+            Console.WriteLine(card);
+        }
+        Console.WriteLine(removedIndex);
         Hand.RemoveAt(removedIndex);
         if (Hand.Count > 0)
         {
-            FixIndexHand(removedIndex);
+            FixIndexHand();
         }
     }
 
-    private void FixIndexHand(int removedIndex)
+    private void FixIndexHand()
     {
-        var lastCard = Hand[^1];
-        for (int i = removedIndex; i < lastCard.IndexHand; i++)
+        for (int i = 0; i < Hand.Count; i++)
         {
             var card = Hand[i];
-            card.IndexHand -= 1;
+            card.IndexHand = i;
             Hand[i] = card;
         }
     }
@@ -136,7 +140,7 @@ public class Player
 
         if (RingSide.Count > 0)
         {
-            FixIndexRingSide(index);
+            FixIndexRingSide();
         }
     }
     
@@ -145,10 +149,11 @@ public class Player
         Card card = RingSide[index];
         RingSide.RemoveAt(index);
         Hand.Add(card);
+        FixIndexHand();
 
         if (RingSide.Count > 0)
         {
-            FixIndexRingSide(index);
+            FixIndexRingSide();
         }
     }
     
@@ -160,17 +165,16 @@ public class Player
 
         if (Hand.Count > 0)
         {
-            FixIndexHand(index);
+            FixIndexHand();
         }
     }
     
-    private void FixIndexRingSide(int removedIndex)
+    private void FixIndexRingSide()
     {
-        var lastCard = RingSide[^1];
-        for (int i = removedIndex; i < lastCard.IndexRingSide; i++)
+        for (int i = 0; i < RingSide.Count; i++)
         {
             var card = RingSide[i];
-            card.IndexRingSide -= 1;
+            card.IndexRingSide = i;
             RingSide[i] = card;
         }
     }
@@ -183,14 +187,8 @@ public class Player
 
         if (Hand.Count > 0)
         {
-            FixIndexHand(index);
+            FixIndexHand();
         }
-    }
-    
-    public Card GetHandCardByTitle(string title)
-    {
-        Card card = Hand.FirstOrDefault(x => x.Title == title);
-        return card;
     }
     
 }
