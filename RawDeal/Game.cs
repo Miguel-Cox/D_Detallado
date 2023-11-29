@@ -258,8 +258,12 @@ public class Game
     private void PlayCard(Card card, string cardString, string playedCardType)
     {
         _view.SayThatPlayerIsTryingToPlayThisCard(CurrentPlayer.Name, cardString);
-        _view.SayThatPlayerSuccessfullyPlayedACard();
-        ActionBasedOnType(card, playedCardType);
+        if (!CheckOpponentHandReversal(card))
+        {
+            _view.SayThatPlayerSuccessfullyPlayedACard(); 
+            ActionBasedOnType(card, playedCardType);
+        }
+        
         
         
     }
@@ -285,7 +289,7 @@ public class Game
                 int damage = GetCardDamage(card);
                 if (damage > 0)
                 {
-                    AttackOpponent(damage);
+                    AttackOpponent(damage, card);
                 }
                 else
                 {
@@ -300,7 +304,76 @@ public class Game
         }
     }
 
-    private void AttackOpponent(int damage)
+    private bool CheckOpponentHandReversal(Card card)
+    {
+        List<Card> opponentReversals = GetOpponentPlayableReversals(card);
+        if (opponentReversals.Any())
+        {
+            int selectedReversalIndex = GetSelectedReversalIndex(opponentReversals);
+            if (selectedReversalIndex != -1)
+            {  
+                PlaySelectedReversalCard(selectedReversalIndex, card);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private int GetSelectedReversalIndex(List<Card> opponentReversals)
+    {
+        List<PlayInfo> reversalInfoList = GetListOfPlayInfo(opponentReversals);
+        List<string> opponentReversalStringCards = GetStringListOfPlayInfo(reversalInfoList);
+        return _view.AskUserToSelectAReversal(WaitingPlayer.Name, opponentReversalStringCards);
+    }
+
+    private void PlaySelectedReversalCard(int selectedReversalIndex, Card card)
+    {
+        List<PlayInfo> reversalInfoList = GetListOfPlayInfo(GetOpponentPlayableReversals(card));
+        _view.SayThatPlayerReversedTheCard(WaitingPlayer.Name, 
+            GetStringListOfPlayInfo(reversalInfoList)[selectedReversalIndex]);
+        CurrentPlayer.DiscardCardFromHand(card.IndexHand);
+        Card reversal = reversalInfoList[selectedReversalIndex].Card;
+        WaitingPlayer.PlayCard(reversal);
+        NextTurn();
+    }
+
+    
+    private bool CanPlayReversal(Card reversal, Card playedCard, Player player)
+    {
+        bool hasSufficientFortitude = HasSufficientFortitude(player, reversal);
+        bool cardsShareSubtype = CardsShareSubtype(playedCard, reversal);
+        bool isReversalSpecial = IsReversalSpecial(playedCard);
+
+        return (hasSufficientFortitude && (cardsShareSubtype || isReversalSpecial));
+    }
+
+    private bool HasSufficientFortitude(Player player, Card reversal)
+    {
+        int requiredFortitude = int.Parse(reversal.Fortitude);
+        return player.Fortitude >= requiredFortitude;
+    }
+
+    private bool IsReversalSpecial(Card card)
+    {
+        const string reversalSpecial = "ReversalSpecial";
+        return card.Subtypes.Contains(reversalSpecial);
+    }
+
+    private bool CardsShareSubtype(Card card1, Card card2)
+    {
+        return card1.Subtypes.Any(subtype1 => 
+            card2.Subtypes.Any(subtype2 => subtype2.Contains(subtype1)));
+    }
+
+    
+    private List<Card> GetOpponentPlayableReversals(Card playedCard)
+    {
+        List<Card> filteredCards = WaitingPlayer.Hand
+            .Where(card => card.Types.Contains("Reversal") && CanPlayReversal(card, playedCard, WaitingPlayer)).ToList();
+        return filteredCards;
+    }
+    private void AttackOpponent(int damage, Card card)
     {
         int currentDamage = 1;
         
@@ -308,8 +381,12 @@ public class Game
         
         while (currentDamage <= damage && !_gameOver)
         {
-            DamageOpponent(currentDamage, damage);
+            bool getDamage = DamageOpponentWithCard(currentDamage, damage, card);
             currentDamage++;
+            if (getDamage == false)
+            {
+                break;
+            }
         }
 
         if (!_gameOver)
@@ -330,15 +407,70 @@ public class Game
 
     public void DamageOpponent(int currentDamage, int damage)
     {
-        if (HaveArsenal(WaitingPlayer))
+
+        if (!HaveArsenal(WaitingPlayer))
         {
-            Card removedCard = WaitingPlayer.LostCardForDamage();
-            string removedCardString = Formatter.CardToString(removedCard);
-            _view.ShowCardOverturnByTakingDamage(removedCardString, currentDamage, damage);
+            FinishGame(CurrentPlayer);
         }
-        else FinishGame(CurrentPlayer);
+        
+        Card removedCard = WaitingPlayer.LostCardForDamage();
+        string removedCardString = Formatter.CardToString(removedCard);
+        _view.ShowCardOverturnByTakingDamage(removedCardString, currentDamage, damage);
+        
+    }
+    
+    public bool DamageOpponentWithCard(int currentDamage, int damage, Card card)
+    {
+
+        if (!HaveArsenal(WaitingPlayer))
+        {
+            FinishGame(CurrentPlayer);
+            return false;
+        }
+        
+        Card removedCard = WaitingPlayer.LostCardForDamage();
+        string removedCardString = Formatter.CardToString(removedCard);
+        _view.ShowCardOverturnByTakingDamage(removedCardString, currentDamage, damage);
+        
+        if (removedCard.Types.Contains("Reversal") && CanPlayReversal(removedCard, card, WaitingPlayer))
+        {
+            PlayReversalFromDeck(card, currentDamage, damage);
+            return false;
+        }
+        
+        return true;
+    }
+    
+
+    private void PlayReversalFromDeck(Card playedCard, int currentDamage, int damage)
+    {
+        _view.SayThatCardWasReversedByDeck(WaitingPlayer.Name);
+        if (CheckCardStuns(playedCard, currentDamage, damage))
+        {
+            ApplyStuns(playedCard);
+        }
+        NextTurn();
     }
 
+    private bool CheckCardStuns(Card playedCard, int currentDamage, int damage)
+    {
+        return ((currentDamage != damage) && (playedCard.StunValue != "0"));
+    }
+    
+    private void ApplyStuns(Card playedCard)
+    {
+        int stunValue = int.Parse(playedCard.StunValue);
+        int cardNumber = _view.AskHowManyCardsToDrawBecauseOfStunValue(CurrentPlayer.Name, stunValue);
+        if (cardNumber > 0)
+        {
+            _view.SayThatPlayerDrawCards(CurrentPlayer.Name, cardNumber);
+        }
+        while (cardNumber > 0)
+        {
+            CurrentPlayer.DrawCard();
+            cardNumber--;
+        }
+    }
     private bool PlayerHasPlayableCards(List<Card> playableCards)
     {
         if (playableCards.Count > 0)
@@ -376,12 +508,6 @@ public class Game
             stringList.Add(playInfoString);
         }
         return stringList;
-    }
-
-    private string GetPlayedCardType(int selection, List<string> playInfoList)
-    {
-        string[] playInfo = playInfoList[selection].Split(" ");
-        return playInfo[0];
     }
 
     private void SeePossibleCardsToPlay()

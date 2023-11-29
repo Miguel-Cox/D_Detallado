@@ -79,11 +79,6 @@ public class Player
 
     public void RemoveCardFromHand(int removedIndex)
     {
-        foreach (var card in Hand)
-        {
-            Console.WriteLine(card);
-        }
-        Console.WriteLine(removedIndex);
         Hand.RemoveAt(removedIndex);
         if (Hand.Count > 0)
         {

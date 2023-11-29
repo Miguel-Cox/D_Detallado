@@ -9,7 +9,22 @@
   <component name="ChangeListManager">
     <list default="true" id="432349f0-b249-4537-bfa5-1f464a60ee7c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.RawDeal/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.RawDeal/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal.Tests/bin/Debug/net6.0/RawDeal.Tests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal.Tests/bin/Debug/net6.0/RawDeal.Tests.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal.Tests/bin/Debug/net6.0/RawDeal.Tests.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal.Tests/bin/Debug/net6.0/RawDeal.Tests.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal.Tests/bin/Debug/net6.0/RawDeal.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal.Tests/bin/Debug/net6.0/RawDeal.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal.Tests/bin/Debug/net6.0/RawDeal.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal.Tests/bin/Debug/net6.0/RawDeal.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal.Tests/obj/Debug/net6.0/RawDeal.Tests.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal.Tests/obj/Debug/net6.0/RawDeal.Tests.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal.Tests/obj/Debug/net6.0/RawDeal.Tests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal.Tests/obj/Debug/net6.0/RawDeal.Tests.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal.Tests/obj/Debug/net6.0/RawDeal.Tests.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal.Tests/obj/Debug/net6.0/RawDeal.Tests.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/Game.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RawDeal/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/Player.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal/bin/Debug/net6.0/RawDeal.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/bin/Debug/net6.0/RawDeal.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal/bin/Debug/net6.0/RawDeal.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/bin/Debug/net6.0/RawDeal.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal/obj/Debug/net6.0/RawDeal.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/obj/Debug/net6.0/RawDeal.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal/obj/Debug/net6.0/RawDeal.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/obj/Debug/net6.0/RawDeal.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal/obj/Debug/net6.0/ref/RawDeal.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/obj/Debug/net6.0/ref/RawDeal.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal/obj/Debug/net6.0/refint/RawDeal.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/obj/Debug/net6.0/refint/RawDeal.dll" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +96,7 @@
       <option name="presentableId" value="Default" />
       <updated>1700337432327</updated>
       <workItem from="1700337434248" duration="9965000" />
-      <workItem from="1700516623508" duration="44908000" />
+      <workItem from="1700516623508" duration="74216000" />
     </task>
     <servers />
   </component>
