@@ -1,6 +1,7 @@
 using RawDealView;
 using RawDealView.Formatters;
 using RawDealView.Options;
+using RawDeal.SuperStarClasses;
 
 namespace RawDeal;
 
@@ -264,9 +265,6 @@ public class Game
             _view.SayThatPlayerSuccessfullyPlayedACard(); 
             ActionBasedOnType(card, playedCardType);
         }
-        
-        
-        
     }
     
     private void ActionBasedOnType(Card card, string playedCardType)

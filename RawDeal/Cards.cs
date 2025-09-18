@@ -1,4 +1,5 @@
 using System.Text.Json;
+using RawDeal.SuperStarClasses;
 
 namespace RawDeal;
 

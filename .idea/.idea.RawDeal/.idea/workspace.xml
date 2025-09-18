@@ -8,8 +8,35 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="432349f0-b249-4537-bfa5-1f464a60ee7c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/RawDeal/SuperStarClasses/HHH.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RawDeal/SuperStarClasses/Jericho.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RawDeal/SuperStarClasses/Kane.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RawDeal/SuperStarClasses/Mankind.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RawDeal/SuperStarClasses/StoneCold.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RawDeal/SuperStarClasses/SuperStar.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RawDeal/SuperStarClasses/TheRock.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RawDeal/SuperStarClasses/Undertaker.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.RawDeal/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.RawDeal/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal.Tests/bin/Debug/net6.0/RawDeal.Tests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal.Tests/bin/Debug/net6.0/RawDeal.Tests.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal.Tests/bin/Debug/net6.0/RawDeal.Tests.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal.Tests/bin/Debug/net6.0/RawDeal.Tests.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal.Tests/bin/Debug/net6.0/RawDeal.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal.Tests/bin/Debug/net6.0/RawDeal.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal.Tests/bin/Debug/net6.0/RawDeal.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal.Tests/bin/Debug/net6.0/RawDeal.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal.Tests/obj/Debug/net6.0/RawDeal.Tests.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal.Tests/obj/Debug/net6.0/RawDeal.Tests.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal.Tests/obj/Debug/net6.0/RawDeal.Tests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal.Tests/obj/Debug/net6.0/RawDeal.Tests.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal.Tests/obj/Debug/net6.0/RawDeal.Tests.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal.Tests/obj/Debug/net6.0/RawDeal.Tests.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal/Card.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/Card.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal/Cards.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/Cards.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal/Deck.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/Deck.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RawDeal/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/Game.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/Player.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal/SuperstarCard.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal/bin/Debug/net6.0/RawDeal.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/bin/Debug/net6.0/RawDeal.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal/bin/Debug/net6.0/RawDeal.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/bin/Debug/net6.0/RawDeal.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal/obj/Debug/net6.0/RawDeal.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/obj/Debug/net6.0/RawDeal.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal/obj/Debug/net6.0/RawDeal.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/obj/Debug/net6.0/RawDeal.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal/obj/Debug/net6.0/RawDeal.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/obj/Debug/net6.0/RawDeal.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal/obj/Debug/net6.0/ref/RawDeal.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/obj/Debug/net6.0/ref/RawDeal.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RawDeal/obj/Debug/net6.0/refint/RawDeal.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RawDeal/obj/Debug/net6.0/refint/RawDeal.dll" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,31 +54,35 @@
   &quot;associatedIndex&quot;: 4
 }</component>
   <component name="ProjectId" id="2YMZVGv9xhxSYccMSMfbu9E56RO" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "CSharpParameterNameHintsOptions",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/mac/Developer/D_Detallado&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;CSharpParameterNameHintsOptions&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "/Users/mac/Library/Application Support/JetBrains/Rider2023.2/resharper-host/DecompilerCache",
-      "/Users/mac/Library/Application Support/JetBrains/Rider2023.2/resharper-host/SourcesCache",
-      "/Users/mac/.local/share/Symbols/src"
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;/Users/mac/Library/Application Support/JetBrains/Rider2023.2/resharper-host/DecompilerCache&quot;,
+      &quot;/Users/mac/Library/Application Support/JetBrains/Rider2023.2/resharper-host/SourcesCache&quot;,
+      &quot;/Users/mac/.local/share/Symbols/src&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Project.RawDeal">
     <configuration name="RawDeal" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -81,7 +112,10 @@
       <option name="presentableId" value="Default" />
       <updated>1700337432327</updated>
       <workItem from="1700337434248" duration="9965000" />
-      <workItem from="1700516623508" duration="77250000" />
+      <workItem from="1700516623508" duration="78898000" />
+      <workItem from="1701239362488" duration="3337000" />
+      <workItem from="1701312581291" duration="16337000" />
+      <workItem from="1701460247748" duration="4076000" />
     </task>
     <servers />
   </component>

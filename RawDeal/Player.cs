@@ -1,4 +1,5 @@
 using RawDealView;
+using RawDeal.SuperStarClasses;
 
 namespace RawDeal;
 

@@ -14,5 +14,4 @@ public struct Card : IViewableCardInfo
     public int IndexHand { get; set; }
     public int IndexRingSide { get; set; }
     
-    public string TypeUsed { get; set; }
 }
